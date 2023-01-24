@@ -17,8 +17,8 @@ body {
   width: 80%;
   max-width: 90%;
   height: 90%;
-  margin: 10px;
   justify-content: center;
+  margin: 0 auto;
   align-items: center;
 }
 .parentWrapper {
@@ -34,13 +34,9 @@ body {
   justify-content: center;
   gap: 1.5rem;
   margin: 10px;
-  position: sticky;
+  position: fixed;
 }
-.toggler {
-  margin-top: 1%;
-  max-height: 400px;
-  border-left: 1px solid black;
-}
+
 .auth {
   display: flex;
   margin: 10% auto;
@@ -65,20 +61,21 @@ body {
   cursor: pointer;
 }
 .mainBody {
-  width: 90%;
+  width: 85%;
   height: 100%;
   display: flex;
   justify-content: center;
+  margin-left: 10%;
 }
 
 @media (width <= 770px) {
   .sideBar {
-    /* display: none; */
     margin-left: -10px;
   }
   .main {
     margin: 0 auto;
-    width: 90vw;
+    width: 80%;
+    max-width: 90%;
   }
 }
 

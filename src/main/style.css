@@ -7,17 +7,19 @@
   border-radius: 10px;
 }
 .UploadFilesStyle {
-  position: absolute;
-  display: none;
-  border: 1px solid black;
+  position: fixed;
   width: 17%;
   padding: 5px;
-  bottom: 10%;
+  top: 57%;
   left: 1%;
 }
 
+.UploadFilesStyle > h3 {
+  padding: 20px 0;
+}
+
 .selectedItem {
-  width: 85%;
+  width: 88%;
   text-align: center;
 }
 
@@ -33,7 +35,20 @@
 .fileWrapper li {
   width: 30%;
   margin: 0, 10px;
-  padding: 10px;
+}
+
+.fileWrapper:has(.audios) {
+  flex-direction: column;
+}
+
+.noOfFiles {
+  margin: 10px auto;
+}
+
+@media (width < 1195px) {
+  .fileWrapper li {
+    width: 45%;
+  }
 }
 
 @media (width <= 770px) {

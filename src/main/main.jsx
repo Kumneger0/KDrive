@@ -11,52 +11,33 @@ import { userContext } from "../App";
 
 function Main() {
   const { user, selectedItem } = useContext(userContext);
-  const [urls, setUrl] = useState([
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-    "hello",
-    "hi",
-    "hww",
-  ]);
+  const [urls, setUrl] = useState([]);
+
   const getUserData = useCallback(async () => {
     const storage = getStorage();
     const listRef = ref(storage, `${user.email}/${selectedItem}`);
     const userFile = await listAll(listRef);
     const { getDownloadURL } = await import("firebase/storage");
     const tempUrl = [];
-    userFile.items.forEach(async (file) => {
+    if (userFile.items.length == 0) {
+      setUrl([]);
+      return;
+    }
+    await userFile.items.forEach(async (file, i) => {
       const url = await getDownloadURL(file);
       tempUrl.push(url);
+      if (i == userFile.items.length - 1) {
+        setUrl(tempUrl);
+      }
     });
 
-    // setUrl(tempUrl);
     return tempUrl;
   }, [selectedItem]);
 
   useEffect(() => {
+    console.log("renered");
     getUserData();
   }, [selectedItem]);
-
-  console.log("urls", urls);
   return (
     <div>
       <div>
@@ -66,13 +47,27 @@ function Main() {
         <ul className="fileWrapper">
           {urls.length > 0 &&
             urls.map((url, i) => (
-              <li key={i}>
-                <img
-                  style={{ width: "100%" }}
-                  src="https://firebasestorage.googleapis.com/v0/b/kunedrive.appspot.com/o/kumnegerwondimu%40gmail.com%2FImages%2FScreenshot%20(3).png?alt=media&token=56af05fd-ef94-445d-85d3-f838cb380e34"
-                  alt=""
-                />
-              </li>
+              <>
+                {selectedItem == "Images" && (
+                  <li key={i}>
+                    <img style={{ width: "100%" }} src={url} alt="" />
+                  </li>
+                )}
+                {selectedItem == "Audios" && (
+                  <li className="audios" key={i}>
+                    <>
+                      <audio src={url} controls autoPlay={false}></audio>
+                    </>
+                  </li>
+                )}
+                {selectedItem == "Videos" && (
+                  <li className="video" key={i}>
+                    <>
+                      <video src={url} controls autoPlay={false}></video>
+                    </>
+                  </li>
+                )}
+              </>
             ))}
         </ul>
       </div>
@@ -86,6 +81,7 @@ export default Main;
 function UploadFiles() {
   const { user } = useContext(userContext);
   const imgInputRef = useRef();
+  const noFilesRef = useRef();
   const uploadFile = async () => {
     if (imgInputRef.current.files && imgInputRef.current.files.length > 0) {
       const { getStorage, ref, uploadBytes } = await import("firebase/storage");
@@ -119,17 +115,27 @@ function UploadFiles() {
       });
     }
   };
+  const diplayNoOfFile = () => {
+    if (imgInputRef.current.files) {
+      noFilesRef.current.innerText = `${imgInputRef.current.files.length} files`;
+    }
+  };
   return (
     <>
       <div className="UploadFilesStyle">
-        <input ref={imgInputRef} type="file" multiple={true} />
+        <h3>Upload new file</h3>
+        <input
+          style={{ color: "transparent" }}
+          ref={imgInputRef}
+          type="file"
+          multiple={true}
+          onChange={diplayNoOfFile}
+        />
+        <div ref={noFilesRef} className="noOfFiles">
+          0 files
+        </div>
         <div>
-          <button
-            onClick={uploadFile}
-            className="btnUpload"
-            type="button"
-            multiple={true}
-          >
+          <button onClick={uploadFile} className="btnUpload" type="button">
             Upload
           </button>
         </div>

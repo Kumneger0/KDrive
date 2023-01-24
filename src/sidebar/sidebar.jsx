@@ -20,8 +20,8 @@ function Sidebar() {
         </li>
         <li className="audio">
           <button
-            className={selectedItem == "Audio" ? "selected" : "notSelected"}
-            onClick={() => setSelectedItem("Audio")}
+            className={selectedItem == "Audios" ? "selected" : "notSelected"}
+            onClick={() => setSelectedItem("Audios")}
           >
             <BsFileMusic />
           </button>
