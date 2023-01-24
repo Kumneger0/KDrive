@@ -1,0 +1,47 @@
+.btnUpload {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: blue;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+.UploadFilesStyle {
+  position: absolute;
+  display: none;
+  border: 1px solid black;
+  width: 17%;
+  padding: 5px;
+  bottom: 10%;
+  left: 1%;
+}
+
+.selectedItem {
+  width: 85%;
+  text-align: center;
+}
+
+.fileWrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  list-style: none;
+  justify-content: center;
+}
+
+.fileWrapper li {
+  width: 30%;
+  margin: 0, 10px;
+  padding: 10px;
+}
+
+@media (width <= 770px) {
+  .fileWrapper {
+    flex-direction: column;
+  }
+  .fileWrapper li {
+    width: 100%;
+    margin: 10px 0;
+  }
+}

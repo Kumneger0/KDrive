@@ -1,0 +1,9 @@
+.loginWrapper button {
+  width: auto;
+  padding: 10px;
+  border: none;
+}
+
+.loginWrapper button:hover {
+  cursor: pointer;
+}
