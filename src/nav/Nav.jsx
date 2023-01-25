@@ -1,9 +1,9 @@
 import React from "react";
 import "./nav.css";
-function Nav() {
+function Nav({ user }) {
   return (
     <>
-      <header>
+      <header className={user ? "userAvail" : "notAvail"}>
         <nav className="NavWrapper">
           <h1>KDrive</h1>
         </nav>

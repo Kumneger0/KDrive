@@ -5,10 +5,10 @@ import Nav from "./nav/Nav";
 import Main from "./main/main";
 import Sidebar from "./sidebar/sidebar";
 import { FaSignOutAlt } from "react-icons/fa";
-
 export const userContext = createContext();
 function App() {
   const [selectedItem, setSelectedItem] = useState("Images");
+  const [user, setUser] = useState(null);
   const sideBarRef = useRef();
   useEffect(() => {
     async function checkUser() {
@@ -22,7 +22,6 @@ function App() {
     checkUser();
   });
 
-  const [user, setUser] = useState(null);
   const signOut = async () => {
     const { signOut, getAuth } = await import("firebase/auth");
     const auth = getAuth(app);
@@ -33,33 +32,35 @@ function App() {
 
   return (
     <div className="App">
-      <Nav />
+      <Nav user={user} />
       {!user ? (
         <div className="wrapper main auth">
           <Auth />
         </div>
       ) : (
-        <div className="container">
-          <userContext.Provider
-            value={{ user, setUser, selectedItem, setSelectedItem }}
-          >
-            <div className="parentWrapper">
-              <div ref={sideBarRef} className="sideBar">
-                <Sidebar />
-              </div>
-              <div className="wrapper main">
-                <div className="mainBody">
-                  <Main />
+        <>
+          <div className="container">
+            <userContext.Provider
+              value={{ user, setUser, selectedItem, setSelectedItem }}
+            >
+              <div className="parentWrapper">
+                <div ref={sideBarRef} className="sideBar">
+                  <Sidebar />
+                </div>
+                <div className="wrapper main">
+                  <div className="mainBody">
+                    <Main />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="signOutBtnWrapper">
-              <button onClick={signOut}>
-                <FaSignOutAlt />
-              </button>
-            </div>
-          </userContext.Provider>
-        </div>
+              <div className="signOutBtnWrapper">
+                <button onClick={signOut}>
+                  <FaSignOutAlt />
+                </button>
+              </div>
+            </userContext.Provider>
+          </div>
+        </>
       )}
     </div>
   );

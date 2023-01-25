@@ -21,6 +21,7 @@
 .selectedItem {
   width: 88%;
   text-align: center;
+  margin: -2% 15% 2% auto;
 }
 
 .fileWrapper {
@@ -35,6 +36,10 @@
 .fileWrapper li {
   width: 30%;
   margin: 0, 10px;
+}
+
+.fileWrapper .videos {
+  width: 100%;
 }
 
 .fileWrapper:has(.audios) {
@@ -54,6 +59,7 @@
   flex-wrap: nowrap;
   gap: 10px;
   width: 250px;
+  overflow-x: hidden;
 }
 
 .fileWrapper:has(.Document) {
@@ -62,8 +68,8 @@
   justify-content: flex-start;
 }
 
-.fileDetail span {
-  padding: 10px;
+.fileWrapper {
+  margin-bottom: 10px;
 }
 
 @media (width < 1195px) {
@@ -75,9 +81,43 @@
 .Document a {
   width: 100px !important;
   text-decoration: none;
-  /* border: 1px solid black; */
 }
 
+.player {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #bcd4d6ea;
+}
+
+.player button {
+  padding: 5px;
+  background-color: #fff;
+  color: black;
+  border: none;
+}
+
+.player button:hover {
+  cursor: pointer;
+}
+
+.cancel {
+  padding: 5px;
+  background-color: #fff;
+  color: black;
+  border: none;
+  position: fixed;
+  right: 1%;
+  bottom: 1%;
+  z-index: 2;
+}
 @media (width <= 770px) {
   .fileWrapper {
     flex-direction: column;
@@ -85,5 +125,8 @@
   .fileWrapper li {
     width: 100%;
     margin: 10px 0;
+  }
+  .selectedItem {
+    margin-top: 10%;
   }
 }

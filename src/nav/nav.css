@@ -4,9 +4,13 @@ header {
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
-  box-shadow: 1px 1px black;
+  background-color: #fff;
 }
 
+.userAvail {
+  position: fixed;
+  z-index: 1;
+}
 .NavWrapper {
   max-width: 80%;
   margin: 0 auto;

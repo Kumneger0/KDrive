@@ -9,11 +9,14 @@ import { listAll, ref, getStorage } from "firebase/storage";
 import "./style.css";
 import { userContext } from "../App";
 import convert from "image-file-resize";
+import { BsPlay, BsPause } from "react-icons/bs";
+import { MdCancel } from "react-icons/md";
 
 function Main() {
   const { user, selectedItem } = useContext(userContext);
   const [urls, setUrl] = useState([]);
-
+  const playerRef = useRef();
+  const audioRef = useRef();
   const getUserData = useCallback(async () => {
     const storage = getStorage();
     const listRef = ref(storage, `${user.email}/${selectedItem}`);
@@ -50,6 +53,12 @@ function Main() {
     console.log("renered");
     getUserData();
   }, [selectedItem]);
+
+  const hidePlayer = () => {
+    playerRef.current.style.visibility =
+      playerRef.current.style.visibility == "hidden" ? "visible" : "hidden";
+  };
+
   return (
     <div>
       <div>
@@ -72,7 +81,15 @@ function Main() {
                 {selectedItem == "Audios" && (
                   <li className="audios" key={i}>
                     <>
-                      <audio src={url} controls autoPlay={false}></audio>
+                      <audio
+                        ref={audioRef}
+                        style={{
+                          visibility: "hidden",
+                        }}
+                        src={url}
+                        controls
+                        autoPlay={false}
+                      ></audio>
                       <div className="fileDetail">
                         <span>{name}</span>
                         <span>{fileSize}</span>
@@ -94,7 +111,7 @@ function Main() {
                 {selectedItem == "Documents" && (
                   <li className="Document" key={i}>
                     <>
-                      <a href={url} controls autoPlay={false} download>
+                      <a href={url} download>
                         {name}
                       </a>
                       <div className="fileDetail">
@@ -108,6 +125,18 @@ function Main() {
         </ul>
       </div>
       <UploadFiles />
+      {selectedItem == "Audios" && (
+        <>
+          <div ref={playerRef} className="player">
+            <button onClick={() => (audioRef.current.autoPlay = true)}>
+              <BsPause />
+            </button>
+          </div>
+          <button onClick={hidePlayer} className="cancel">
+            <MdCancel />
+          </button>
+        </>
+      )}
     </div>
   );
 }
