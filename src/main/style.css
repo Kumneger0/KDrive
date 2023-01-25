@@ -41,14 +41,41 @@
   flex-direction: column;
 }
 
+.fileWrapper:has(.videos) li video {
+  width: 100%;
+}
+
 .noOfFiles {
   margin: 10px auto;
+}
+
+.fileDetail {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  width: 250px;
+}
+
+.fileWrapper:has(.Document) {
+  width: 200%;
+  margin: 0 auto;
+  justify-content: flex-start;
+}
+
+.fileDetail span {
+  padding: 10px;
 }
 
 @media (width < 1195px) {
   .fileWrapper li {
     width: 45%;
   }
+}
+
+.Document a {
+  width: 100px !important;
+  text-decoration: none;
+  /* border: 1px solid black; */
 }
 
 @media (width <= 770px) {
