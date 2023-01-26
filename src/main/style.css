@@ -12,7 +12,6 @@
   padding: 5px;
   top: 57%;
   left: 1%;
-  z-index: -1;
 }
 
 .UploadFilesStyle > h3 {
@@ -25,6 +24,12 @@
   margin: -2% 15% 2% auto;
 }
 
+.sWrapper {
+  width: 100%;
+  margin-left: -10%;
+  display: flex;
+  justify-content: center;
+}
 .fileWrapper {
   width: 100%;
   display: flex;
@@ -36,7 +41,6 @@
 
 .fileWrapper li {
   width: 30%;
-  margin: 0, 10px;
 }
 
 .fileWrapper .videos {
@@ -45,8 +49,12 @@
 
 .fileWrapper:has(.audios) {
   flex-direction: column;
+  width: 200%;
+  gap: 0;
 }
-
+.fileWrapper:has(.audios) li {
+  width: 100%;
+}
 .fileWrapper:has(.videos) li video {
   width: 100%;
 }
@@ -57,21 +65,14 @@
 
 .fileDetail {
   display: flex;
-  flex-wrap: nowrap;
   gap: 10px;
-  width: 250px;
-  overflow-x: hidden;
+  margin: 10px;
+  align-items: center;
 }
 
 .fileDetail:hover {
   cursor: pointer;
 }
-
-/* .fileWrapper:has(.Document) {
-  width: 200%;
-  margin: 0 auto;
-  justify-content: flex-start;
-} */
 
 .fileWrapper {
   margin-bottom: 10px;
@@ -139,4 +140,20 @@
   .selectedItem {
     margin-top: 10%;
   }
+  .UploadFilesStyle {
+    z-index: -1;
+  }
+}
+
+.musicName {
+  position: fixed;
+  bottom: 5%;
+  left: 5%;
+  z-index: 2;
+}
+
+.musicICon {
+  padding: 5px;
+  background-color: #fff;
+  border: none;
 }

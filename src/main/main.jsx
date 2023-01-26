@@ -11,6 +11,7 @@ import { userContext } from "../App";
 import convert from "image-file-resize";
 import { BsPlay, BsPause } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
+import { FcMusic } from "react-icons/fc";
 
 function Main() {
   const { user, selectedItem } = useContext(userContext);
@@ -61,7 +62,12 @@ function Main() {
   const hidePlayer = () => {
     playerRef.current.style.visibility =
       playerRef.current.style.visibility == "hidden"
-        ? "visible"
+        ? (() => {
+            audioRef.current.play();
+            let selectedMusicTemp = { ...selectedMusic, state: "playing" };
+            setSelectedMusic(selectedMusicTemp);
+            return "visible";
+          })()
         : (() => {
             audioRef.current.pause();
             let selectedMusicTemp = { ...selectedMusic, state: "paused" };
@@ -72,8 +78,14 @@ function Main() {
 
   return (
     <div>
-      <div>
-        <h3 className="selectedItem">{selectedItem}</h3>
+      <div className={selectedItem == "Audios" && "sWrapper"}>
+        <h3
+          className={
+            selectedItem == "Audios" ? "audioSelected" : "selectedItem"
+          }
+        >
+          {selectedItem}
+        </h3>
       </div>
       <div>
         <ul className="fileWrapper">
@@ -95,9 +107,12 @@ function Main() {
                       <div className="fileDetail">
                         <span
                           onClick={() =>
-                            setSelectedMusic({ url, state: "playing" })
+                            setSelectedMusic({ url, name, state: "playing" })
                           }
                         >
+                          <button className="musicICon">
+                            <FcMusic />{" "}
+                          </button>{" "}
                           {name}
                         </span>
                         <span>{fileSize}</span>
@@ -106,9 +121,17 @@ function Main() {
                   </li>
                 )}
                 {selectedItem == "Videos" && (
-                  <li className="videos" key={i}>
+                  <li key={i}>
                     <>
-                      <video src={url} controls autoPlay={false}></video>
+                      <video
+                        style={{
+                          width: "100%",
+                        }}
+                        src={url}
+                        controls
+                        autoPlay={false}
+                        preload="metadata"
+                      ></video>
                       <div className="fileDetail">
                         <span>{name}</span>
                         <span>{fileSize}</span>
@@ -174,6 +197,7 @@ function Main() {
                   controls
                   autoPlay={true}
                 ></audio>
+                <span className="musicName">{selectedItem.name}</span>
               </>
             )}{" "}
           </div>
@@ -245,6 +269,7 @@ function UploadFiles() {
           uploadingStatusRef.current.innerText = `${imgInputRef.current.files.length} files uploaded`;
           setTimeout(() => {
             uploadingStatusRef.current.style.visibility = "hidden";
+            imgInputRef.current.files = [];
           }, 1000);
         }
       });
@@ -261,6 +286,7 @@ function UploadFiles() {
         <h3>Upload new file</h3>
         <input
           style={{ color: "transparent" }}
+          className="fileSelect"
           ref={imgInputRef}
           type="file"
           multiple={true}
@@ -275,7 +301,6 @@ function UploadFiles() {
             onClick={uploadFile}
             className="btnUpload"
             type="button"
-            disabled={false}
           >
             Upload
           </button>
