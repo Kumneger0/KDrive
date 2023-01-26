@@ -15,6 +15,10 @@ import { MdCancel } from "react-icons/md";
 function Main() {
   const { user, selectedItem } = useContext(userContext);
   const [urls, setUrl] = useState([]);
+  const [selectedMusic, setSelectedMusic] = useState({
+    url: null,
+    state: null,
+  });
   const playerRef = useRef();
   const audioRef = useRef();
   const getUserData = useCallback(async () => {
@@ -56,7 +60,14 @@ function Main() {
 
   const hidePlayer = () => {
     playerRef.current.style.visibility =
-      playerRef.current.style.visibility == "hidden" ? "visible" : "hidden";
+      playerRef.current.style.visibility == "hidden"
+        ? "visible"
+        : (() => {
+            audioRef.current.pause();
+            let selectedMusicTemp = { ...selectedMusic, state: "paused" };
+            setSelectedMusic(selectedMusicTemp);
+            return "hidden";
+          })();
   };
 
   return (
@@ -81,17 +92,14 @@ function Main() {
                 {selectedItem == "Audios" && (
                   <li className="audios" key={i}>
                     <>
-                      <audio
-                        ref={audioRef}
-                        style={{
-                          visibility: "hidden",
-                        }}
-                        src={url}
-                        controls
-                        autoPlay={false}
-                      ></audio>
                       <div className="fileDetail">
-                        <span>{name}</span>
+                        <span
+                          onClick={() =>
+                            setSelectedMusic({ url, state: "playing" })
+                          }
+                        >
+                          {name}
+                        </span>
                         <span>{fileSize}</span>
                       </div>
                     </>
@@ -109,13 +117,13 @@ function Main() {
                   </li>
                 )}
                 {selectedItem == "Documents" && (
-                  <li className="Document" key={i}>
+                  <li className="" key={i}>
                     <>
-                      <a href={url} download>
-                        {name}
-                      </a>
                       <div className="fileDetail">
-                        {/* <span>{fileSize}</span> */}
+                        <a href={url} download>
+                          {name}
+                        </a>
+                        <span>{fileSize}</span>
                       </div>
                     </>
                   </li>
@@ -128,9 +136,46 @@ function Main() {
       {selectedItem == "Audios" && (
         <>
           <div ref={playerRef} className="player">
-            <button onClick={() => (audioRef.current.autoPlay = true)}>
-              <BsPause />
-            </button>
+            {selectedMusic.url && (
+              <>
+                <>
+                  {selectedMusic.state == "paused" ? (
+                    <button
+                      onClick={() => {
+                        let res = audioRef.current.play();
+                        let setectedTemp = {
+                          ...selectedMusic,
+                          state: "playing",
+                        };
+                        setSelectedMusic(setectedTemp);
+                      }}
+                    >
+                      <BsPlay />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        audioRef.current.pause();
+                        let setectedTemp = {
+                          ...selectedMusic,
+                          state: "paused",
+                        };
+                        setSelectedMusic(setectedTemp);
+                      }}
+                    >
+                      <BsPause />
+                    </button>
+                  )}{" "}
+                </>
+                <audio
+                  className="audioPlayer"
+                  ref={audioRef}
+                  src={selectedMusic.url}
+                  controls
+                  autoPlay={true}
+                ></audio>
+              </>
+            )}{" "}
           </div>
           <button onClick={hidePlayer} className="cancel">
             <MdCancel />
@@ -230,6 +275,7 @@ function UploadFiles() {
             onClick={uploadFile}
             className="btnUpload"
             type="button"
+            disabled={false}
           >
             Upload
           </button>
