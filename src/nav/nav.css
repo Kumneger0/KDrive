@@ -1,6 +1,7 @@
 header {
   width: 100%;
   height: 70px;
+  margin: 0 auto;
   border-bottom: 1px solid black;
   display: flex;
   align-items: center;
@@ -14,4 +15,27 @@ header {
 .NavWrapper {
   max-width: 80%;
   margin: 0 auto;
+}
+
+.toggler {
+  position: absolute;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  left: 20px;
+  top: 20px;
+  background-color: #fff;
+  visibility: hidden;
+}
+
+.toggler:hover {
+  cursor: pointer;
+  background-color: rgb(216, 188, 188);
+  color: #fff;
+}
+
+@media (width <= 770px) {
+  .toggler {
+    visibility: visible;
+  }
 }

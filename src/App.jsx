@@ -5,10 +5,14 @@ import Nav from "./nav/Nav";
 import Main from "./main/main";
 import Sidebar from "./sidebar/sidebar";
 import { FaSignOutAlt } from "react-icons/fa";
+import Sm from "./Sm";
+import { UploadFiles } from "./main/main";
+
 export const userContext = createContext();
 function App() {
   const [selectedItem, setSelectedItem] = useState("Images");
   const [user, setUser] = useState(null);
+  const [shouldDisplay, setShouldDisplay] = useState(null);
   const sideBarRef = useRef();
   useEffect(() => {
     async function checkUser() {
@@ -30,9 +34,13 @@ function App() {
     });
   };
 
+  const togglerNavBar = () => {
+    setShouldDisplay((prv) => !prv);
+  };
+
   return (
     <div className="App">
-      <Nav user={user} />
+      <Nav togglerNavBar={togglerNavBar} user={user} />
       {!user ? (
         <div className="wrapper main auth">
           <Auth />
@@ -43,6 +51,7 @@ function App() {
             <userContext.Provider
               value={{ user, setUser, selectedItem, setSelectedItem }}
             >
+              <Sm shouldDisplay={shouldDisplay} togglerNavBar={togglerNavBar} />
               <div className="parentWrapper">
                 <div ref={sideBarRef} className="sideBar">
                   <Sidebar />
@@ -50,6 +59,9 @@ function App() {
                 <div className="wrapper main">
                   <div className="mainBody">
                     <Main />
+                    <div className="UploadFilesStyle">
+                      <UploadFiles />
+                    </div>
                   </div>
                 </div>
               </div>

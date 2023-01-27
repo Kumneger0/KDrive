@@ -6,13 +6,6 @@
   border: none;
   border-radius: 10px;
 }
-.UploadFilesStyle {
-  position: fixed;
-  width: 17%;
-  padding: 5px;
-  top: 57%;
-  left: 1%;
-}
 
 .UploadFilesStyle > h3 {
   padding: 20px 0;
@@ -26,17 +19,18 @@
 
 .sWrapper {
   width: 100%;
-  margin-left: -10%;
+  margin: 10%, auto;
   display: flex;
   justify-content: center;
 }
 .fileWrapper {
-  width: 100%;
+  width: 90vw;
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
   list-style: none;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .fileWrapper li {
@@ -47,16 +41,8 @@
   width: 100%;
 }
 
-.fileWrapper:has(.audios) {
-  flex-direction: column;
-  width: 200%;
-  gap: 0;
-}
-.fileWrapper:has(.audios) li {
-  width: 100%;
-}
 .fileWrapper:has(.videos) li video {
-  width: 100%;
+  width: 0%;
 }
 
 .noOfFiles {
@@ -131,17 +117,25 @@
 }
 @media (width <= 770px) {
   .fileWrapper {
-    flex-direction: column;
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .fileWrapper li {
     width: 100%;
-    margin: 10px 0;
+    height: auto;
+    /* margin: 5px 0; */
   }
   .selectedItem {
     margin-top: 10%;
   }
   .UploadFilesStyle {
+    /* display: none; */
     z-index: -1;
+
+    position: fixed;
+    left: 0;
   }
 }
 
@@ -156,4 +150,33 @@
   padding: 5px;
   background-color: #fff;
   border: none;
+}
+.uploadingArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px;
+  padding: 10px auto;
+}
+
+.uploadingArea h4 {
+  padding-bottom: 10px;
+}
+
+.uploadingArea .noOfFiles {
+  width: 50%;
+  margin-left: 0px;
+}
+.uploadingArea h4 button {
+  padding: 5px;
+  border: none;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  background-color: rgb(71, 71, 227);
+  color: #fff;
+}
+
+.uploadingArea:hover {
+  cursor: pointer;
 }

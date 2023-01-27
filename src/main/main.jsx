@@ -9,10 +9,12 @@ import { listAll, ref, getStorage } from "firebase/storage";
 import "./style.css";
 import { userContext } from "../App";
 import convert from "image-file-resize";
-import { BsPlay, BsPause } from "react-icons/bs";
+import { BsPlay, BsPause, BsCloudUpload } from "react-icons/bs";
 import { MdCancel } from "react-icons/md";
 import { FcMusic } from "react-icons/fc";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+let interval = null;
 function Main() {
   const { user, selectedItem } = useContext(userContext);
   const [urls, setUrl] = useState([]);
@@ -76,9 +78,27 @@ function Main() {
           })();
   };
 
+  const startPreview = (e) => {
+    e.target.muted = true;
+    e.target.currentTime = 1;
+    e.target.playbackRate = 1.5;
+    e.target.play();
+    interval = setInterval(() => {
+      e.target.currentTime += 1;
+      e.target.play();
+    }, 500);
+  };
+
+  const stopPreview = (e) => {
+    if (interval) clearInterval(interval);
+    e.target.currentTime = 0;
+    e.target.playbackRate = 1;
+    e.target.pause();
+  };
+
   return (
     <div>
-      <div className={selectedItem == "Audios" && "sWrapper"}>
+      <div className="sWrapper">
         <h3
           className={
             selectedItem == "Audios" ? "audioSelected" : "selectedItem"
@@ -102,20 +122,30 @@ function Main() {
                   </li>
                 )}
                 {selectedItem == "Audios" && (
-                  <li className="audios" key={i}>
+                  <li key={i}>
                     <>
                       <div className="fileDetail">
-                        <span
+                        <div
+                          className="audios"
                           onClick={() =>
                             setSelectedMusic({ url, name, state: "playing" })
                           }
+                          style={{
+                            overflowX: "hidden",
+                          }}
                         >
-                          <button className="musicICon">
+                          <button
+                            style={{
+                              padding: "5px",
+                              border: "none",
+                              backgroundColor: "#fff",
+                            }}
+                          >
                             <FcMusic />{" "}
                           </button>{" "}
                           {name}
-                        </span>
-                        <span>{fileSize}</span>
+                        </div>
+                        <pre>{fileSize}</pre>
                       </div>
                     </>
                   </li>
@@ -128,9 +158,11 @@ function Main() {
                           width: "100%",
                         }}
                         src={url}
-                        controls
+                        controls={false}
                         autoPlay={false}
                         preload="metadata"
+                        onMouseEnter={startPreview}
+                        onMouseOut={stopPreview}
                       ></video>
                       <div className="fileDetail">
                         <span>{name}</span>
@@ -155,7 +187,6 @@ function Main() {
             ))}
         </ul>
       </div>
-      <UploadFiles />
       {selectedItem == "Audios" && (
         <>
           <div ref={playerRef} className="player">
@@ -212,15 +243,17 @@ function Main() {
 
 export default Main;
 
-function UploadFiles() {
+export function UploadFiles() {
   const { user } = useContext(userContext);
   const imgInputRef = useRef();
   const noFilesRef = useRef();
   const uploadingStatusRef = useRef();
   const uploadBtnRef = useRef();
 
-  const uploadFile = async () => {
+  const uploadFile = async (e) => {
     if (imgInputRef.current.files && imgInputRef.current.files.length > 0) {
+      imgInputRef.current.disabled = true;
+      e.target.disabled = true;
       uploadingStatusRef.current.style.visibility = "visible";
       const { getStorage, ref, uploadBytes } = await import("firebase/storage");
       const storage = getStorage();
@@ -267,9 +300,12 @@ function UploadFiles() {
         if (i == imgInputRef.current.files.length - 1) {
           uploadingStatusRef.current.style.visibility = "visible";
           uploadingStatusRef.current.innerText = `${imgInputRef.current.files.length} files uploaded`;
+          toast(`you have uploaded ${imgInputRef.current.files.length} files`);
           setTimeout(() => {
+            imgInputRef.current.disabled = false;
+            e.target.disabled = false;
             uploadingStatusRef.current.style.visibility = "hidden";
-            imgInputRef.current.files = [];
+            imgInputRef.current.value = null;
           }, 1000);
         }
       });
@@ -282,8 +318,12 @@ function UploadFiles() {
   };
   return (
     <>
-      <div className="UploadFilesStyle">
-        <h3>Upload new file</h3>
+      <div className="uploadingArea">
+        <h4>
+          <button>
+            <BsCloudUpload />
+          </button>
+        </h4>
         <input
           style={{ color: "transparent" }}
           className="fileSelect"
@@ -304,6 +344,14 @@ function UploadFiles() {
           >
             Upload
           </button>
+          <ToastContainer
+            position="bottom-right"
+            newestOnTop
+            pauseOnHover
+            autoClose={5000}
+            theme="dark"
+          />
+
           <div ref={uploadingStatusRef} style={{ visibility: "hidden" }}>
             uploading...
           </div>

@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 body {
   overflow-x: hidden;
@@ -68,18 +70,34 @@ body {
   justify-content: center;
   margin-left: 10%;
 }
+.UploadFilesStyle {
+  position: fixed;
+  width: 17%;
+  padding: 5px;
+  top: 57%;
+  left: 1%;
+}
 
 @media (width <= 770px) {
   .sideBar {
     margin-left: -10px;
+    background-color: blue;
+    display: none;
   }
   .main {
     margin: 0 auto;
-    width: 80%;
-    max-width: 90%;
+    width: 100%;
+    /* max-width: 90%;0%;
+    */
   }
   .parentWrapper {
     margin: 20% auto;
+  }
+  .UploadFilesStyle {
+    display: none;
+  }
+  .signOutBtnWrapper {
+    top: 1.5%;
   }
 }
 
