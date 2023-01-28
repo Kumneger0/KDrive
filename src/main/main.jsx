@@ -99,13 +99,10 @@ function Main() {
   return (
     <div>
       <div className="sWrapper">
-        <h3
-          className={
-            selectedItem == "Audios" ? "audioSelected" : "selectedItem"
-          }
-        >
-          {selectedItem}
-        </h3>
+        <h3>{selectedItem}</h3>
+      </div>
+      <div className={!urls.length && "empty"}>
+        {!urls.length && <div>You don't have any uploaded {selectedItem}</div>}
       </div>
       <div>
         <ul className="fileWrapper">

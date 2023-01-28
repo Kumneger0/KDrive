@@ -7,3 +7,13 @@
 .loginWrapper button:hover {
   cursor: pointer;
 }
+
+@media (width < 770px) {
+  .loginWrapper {
+    margin: auto;
+    width: 80vw;
+    height: 70vh;
+    display: grid;
+    place-items: center;
+  }
+}
