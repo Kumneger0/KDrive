@@ -3,7 +3,12 @@
  
 create new project in firebase 
 enable google from authentication from firebase console
+
+
 enable firestore from firebase console
+
+
+
 enable storage from firebase console
 
 
